@@ -17,10 +17,10 @@ def isQuestion(s):
 	
 def isAnswer(s):
 	if len(s)<4:
-		return None
+		return False
 	if ( s[0:2] in ['A-','B-','C-','D-','E-'] ) or ( s[0:2] in ['A.','B.','C.','D.','E.'] ):
 		return True	
-	return None
+	return False
 
 	
 while not c is None:	
@@ -30,24 +30,27 @@ while not c is None:
 		break	
 	separator = isQuestion(c)		
 	if separator:
-		ch = c.split(separator)[0]
-		if int(ch) in range(100):
-			element={}
-			element["title"] = c
-			#List.append(element)
-			line=0
-			while True:
-				if line==5:							
-					break	
-				q = f.readline()
-				if isAnswer(q):
-					line +=1
-					element[q[0]] = q
-				else:
-					element["title"] = element["title"] + q 
-			List.append(element)
+		element={}
+		element["title"] = c
+		#List.append(element)
+		line=0
+		while True:
+			if line==5:							
+				break	
+			q = f.readline()
+			if isAnswer(q) :
+				line +=1
+				element[q[0]] = q
+			else:
+				element["title"] = element["title"] + q
+		element["rightAnswers"] = [1,3]		 
+		List.append(element)
 	c = f.readline()
-print(List)
+JSONFILE = {}
+JSONFILE["2018"] = {}
+JSONFILE["2018"]["Monastir"] = {}
+JSONFILE["2018"]["Monastir"]["Cardio"] = List 
+print(JSONFILE)
 	
 	
 	
