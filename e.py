@@ -61,13 +61,15 @@ firebase = firebase.FirebaseApplication("https://ionicapp-2bb5c-default-rtdb.fir
 
 data = JSONFILE
 
-# To post data 
+""" # To post data 
 result = firebase.post('ionicapp-2bb5c-default-rtdb/Quiz', data)
-print(result)
+print(result) """
 
 # To get data
 jsonFileFromdB=firebase.get('ionicapp-2bb5c-default-rtdb/Quiz', '')
-print(jsonFileFromdB)
+key_ = list(jsonFileFromdB.keys())[0]
+extractedData = jsonFileFromdB[key_]
+print(extractedData)
 	
 	
 	
