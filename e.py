@@ -1,3 +1,6 @@
+from firebase import firebase
+
+
 f = open("test", "r")
 c = f.readline()
 List=[]
@@ -50,12 +53,21 @@ JSONFILE = {}
 JSONFILE["2018"] = {}
 JSONFILE["2018"]["Monastir"] = {}
 JSONFILE["2018"]["Monastir"]["Cardio"] = List 
-print(JSONFILE)
+
+
+
 	
-	
-	
-	
-	
+firebase = firebase.FirebaseApplication("https://ionicapp-2bb5c-default-rtdb.firebaseio.com/", None) # Auth= None because we're in Test Mode
+
+data = JSONFILE
+
+# To post data 
+result = firebase.post('ionicapp-2bb5c-default-rtdb/Quiz', data)
+print(result)
+
+# To get data
+jsonFileFromdB=firebase.get('ionicapp-2bb5c-default-rtdb/Quiz', '')
+print(jsonFileFromdB)
 	
 	
 	
