@@ -1,19 +1,28 @@
 from firebase import firebase
 from flask import Flask, request
+from flask_cors import CORS
+
+
 
 app = Flask(__name__)
+cors = CORS(app, resources={r"/*": {"origins": "*"}})
+
     
 firebase = firebase.FirebaseApplication("https://ionicapp-2bb5c-default-rtdb.firebaseio.com/", None) # Auth= None because we're in Test Mode
 
 
 @app.route('/data', methods=["POST"])
 def home():
+
     # To get data
     input_json = request.get_json() # userName - year - school - course
 
     jsonFileFromdB=firebase.get('ionicapp-2bb5c-default-rtdb/Quiz', '')
+
     key_ = list(jsonFileFromdB.keys())[0]
     extractedData = jsonFileFromdB[key_]
+    print("Data: ")
+    print(extractedData)
     try:
         return {'data':extractedData[input_json['year']][input_json['school']][input_json['course']]}
     except:
