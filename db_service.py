@@ -11,7 +11,7 @@ cors = CORS(app, resources={r"/*": {"origins": "*"}})
 firebase = firebase.FirebaseApplication("https://ionicapp-2bb5c-default-rtdb.firebaseio.com/", None) # Auth= None because we're in Test Mode
 
 get_statistics(username):
-    jsonFileFromdB=firebase.get('ionicapp-2bb5c-default-rtdb/Quiz', 'statistics')
+    jsonFileFromdB=firebase.get('ionicapp-2bb5c-default-rtdb/Quiz/statistics')
 
     key_ = list(jsonFileFromdB.keys())[0]
     extractedData = jsonFileFromdB[key_]
@@ -29,9 +29,9 @@ post_specefic_statistics():
     data = input_json["data"]
    # firebase = firebase.FirebaseApplication("https://ionicapp-2bb5c-default-rtdb.firebaseio.com/", None) # Auth= None because we're in Test Mode
 
-    """ # To post data 
-    result = firebase.post('ionicapp-2bb5c-default-rtdb/Quiz', data)  # to be modified to fit the path
-    print(result) """
+    
+    result = firebase.post('ionicapp-2bb5c-default-rtdb/'+path, data)  # to be modified to fit the path
+    print(result) 
 
 get_specefic_statistics():
     # you must send data and its path
@@ -40,7 +40,7 @@ get_specefic_statistics():
 
   #  firebase = firebase.FirebaseApplication("https://ionicapp-2bb5c-default-rtdb.firebaseio.com/", None) # Auth= None because we're in Test Mode
 
-    jsonFileFromdB=firebase.get('ionicapp-2bb5c-default-rtdb/Quiz', path)
+    jsonFileFromdB=firebase.get('ionicapp-2bb5c-default-rtdb/'+path)
 
     key_ = list(jsonFileFromdB.keys())[0]
     extractedData = jsonFileFromdB[key_]
