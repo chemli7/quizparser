@@ -1,5 +1,15 @@
 from firebase import firebase
+from firebase_admin import db
 
+# Initialize the app with a service account, granting admin privileges
+
+import firebase_admin
+from firebase_admin import credentials
+
+cred = credentials.Certificate("./serviceAccountKey.json")
+firebase_admin.initialize_app(cred,{
+    'databaseURL': 'https://ionicapp-2bb5c-default-rtdb.firebaseio.com'
+})
 
 f = open("test", "r")
 c = f.readline()
@@ -61,15 +71,25 @@ firebase = firebase.FirebaseApplication("https://ionicapp-2bb5c-default-rtdb.fir
 
 data = JSONFILE
 
-""" # To post data 
-result = firebase.post('ionicapp-2bb5c-default-rtdb/Quiz', data)
-print(result) """
+# To post data 
+#result = firebase.post('ionicapp-2bb5c-default-rtdb/Quiz', data)
+ref = db.reference('/quiz')
+data["quizlist"]={
+        "course1":{"path": "cardio/Monastir/2017","id":1},
+        "course2":{"path": "cardio/Monastir/2017","id":2},
+        "course3":{"path": "cardio/Monastir/2017","id":3},
+        "course4":{"path": "cardio/Monastir/2017","id":4},
+        "course5":{"path": "cardio/Monastir/2017","id":5},
+        "course6":{"path": "cardio/Monastir/2017","id":6},
+        "course7":{"path": "cardio/Monastir/2017","id":7}
+    }
+ref.set(data)
 
-# To get data
-jsonFileFromdB=firebase.get('ionicapp-2bb5c-default-rtdb/Quiz', '')
-key_ = list(jsonFileFromdB.keys())[0]
-extractedData = jsonFileFromdB[key_]
-print(extractedData)
+# # To get data
+# jsonFileFromdB=firebase.get('ionicapp-2bb5c-default-rtdb/Quiz', '')
+# key_ = list(jsonFileFromdB.keys())[0]
+# extractedData = jsonFileFromdB[key_]
+# print(extractedData)
 	
 	
 	

@@ -50,7 +50,7 @@ def post_specefic_statistics():
     input_json = request.get_json()
     path = input_json["path"]
     data = input_json["data"]
-    ref = db.reference('/'+ path)  # slash ??
+    ref = db.reference(path)  # slash ??
     ref.set(data)
     return "OK" 
 
@@ -59,11 +59,11 @@ def get_specefic_statistics():
     # you must send data and its path
     input_json = request.get_json()
     path = input_json["path"]
-    jsonFileFromdB=firebase.get('ionicapp-2bb5c-default-rtdb/'+path,None)
+    ref = db.reference(path)
+    jsonFileFromdB = ref.get()
+    #jsonFileFromdB=firebase.get('ionicapp-2bb5c-default-rtdb/'+path,None)
     print(jsonFileFromdB)
-    key_ = list(jsonFileFromdB.keys())[0]
-    extractedData = jsonFileFromdB[key_]
-    return {"message":extractedData, "error":None}
+    return {"message":jsonFileFromdB, "error":None}
 
 @app.route('/user_init', methods=["POST"])
 def user_init():
@@ -71,17 +71,14 @@ def user_init():
     user = "userID"
     ref = db.reference('/'+user+'/quiz')
     ref.set({
-        "quiz_list":[],
+        "quiz_list":["1"],
         "avg_score":0,
         "number_quiz_done":0,
         "number_correct_qcm":0,
         "number_qcm_done":0,
-        "number_qcm_done_faculte":0,
-        "number_qcm_done_year":1
+        "number_qcm_done_faculte":{"Tunis":0,"Monastir":0,"Sfax":0,"Sousse":0}
     })
 
-    db_ref= ref.child("number_qcm_done_year")
-    db_ref.set(0)
     return "OK - initialized"
 
 @app.route('/get_user_init', methods=["POST"])
@@ -94,7 +91,7 @@ def get_user_init():
 
 
 @app.route('/quizlist_init', methods=["POST"])
-def user_init():
+def quizlist_init():
     ref = db.reference('/quiz/quizlist')
     ref.set({
         "course1":{"path": "cardio/Monastir/2017","id":1},
@@ -110,14 +107,27 @@ def user_init():
 
 
 @app.route('/get_quizlist', methods=["POST"])
-def get_specefic_statistics():
-    path= /quiz/quizlist
-    jsonFileFromdB=firebase.get('ionicapp-2bb5c-default-rtdb/'+path,None)
+def get_quizlist():
+    path= "/quiz/quizlist"
+    ref = db.reference(path)
+    jsonFileFromdB = ref.get()
+    #jsonFileFromdB=firebase.get('ionicapp-2bb5c-default-rtdb/'+path,None)
     print(jsonFileFromdB)
-    key_ = list(jsonFileFromdB.keys())[0]
-    extractedData = jsonFileFromdB[key_]
     return {"message":extractedData, "error":None}
 
+@app.route('/data', methods=["POST"])
+def home():
+
+    # To get data
+    input_json = request.get_json() # userName - year - school - course
+    #jsonFileFromdB=firebase.get('ionicapp-2bb5c-default-rtdb/Quiz', '')
+    ref = db.reference(input_json["path"])
+    jsonFileFromdB = ref.get()
+    print(jsonFileFromdB)
+    try:
+        return {'data':jsonFileFromdB}
+    except:
+        return {'data':[]}
 
 
 
