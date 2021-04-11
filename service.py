@@ -50,9 +50,8 @@ def post_specefic_statistics():
     input_json = request.get_json()
     path = input_json["path"]
     data = input_json["data"]
-   # firebase = firebase.FirebaseApplication("https://ionicapp-2bb5c-default-rtdb.firebaseio.com/", None) # Auth= None because we're in Test Mode
-    result = firebase.post('ionicapp-2bb5c-default-rtdb/'+path, data)  # to be modified to fit the path
-    print(result)
+    ref = db.reference('/'+ path)  # slash ??
+    ref.set(data)
     return "OK" 
 
 @app.route('/get_specific_statistics', methods=["POST"])
@@ -60,7 +59,6 @@ def get_specefic_statistics():
     # you must send data and its path
     input_json = request.get_json()
     path = input_json["path"]
-  #  firebase = firebase.FirebaseApplication("https://ionicapp-2bb5c-default-rtdb.firebaseio.com/", None) # Auth= None because we're in Test Mode
     jsonFileFromdB=firebase.get('ionicapp-2bb5c-default-rtdb/'+path,None)
     print(jsonFileFromdB)
     key_ = list(jsonFileFromdB.keys())[0]
@@ -93,6 +91,34 @@ def get_user_init():
     b=firebase.get('ionicapp-2bb5c-default-rtdb/'+ user + "/quiz/avg_score",None)
     c=firebase.get('ionicapp-2bb5c-default-rtdb/'+ user + "/quiz/number_quiz_done",None)
     return a,b,c
+
+
+@app.route('/quizlist_init', methods=["POST"])
+def user_init():
+    ref = db.reference('/quiz/quizlist')
+    ref.set({
+        "course1":{"path": "cardio/Monastir/2017","id":1},
+        "course2":{"path": "cardio/Monastir/2017","id":2},
+        "course3":{"path": "cardio/Monastir/2017","id":3},
+        "course4":{"path": "cardio/Monastir/2017","id":4},
+        "course5":{"path": "cardio/Monastir/2017","id":5},
+        "course6":{"path": "cardio/Monastir/2017","id":6},
+        "course7":{"path": "cardio/Monastir/2017","id":7}
+    })
+
+    return "OK - initialized"
+
+
+@app.route('/get_quizlist', methods=["POST"])
+def get_specefic_statistics():
+    path= /quiz/quizlist
+    jsonFileFromdB=firebase.get('ionicapp-2bb5c-default-rtdb/'+path,None)
+    print(jsonFileFromdB)
+    key_ = list(jsonFileFromdB.keys())[0]
+    extractedData = jsonFileFromdB[key_]
+    return {"message":extractedData, "error":None}
+
+
 
 
 if __name__ == '__main__':
