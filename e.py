@@ -11,8 +11,8 @@ firebase_admin.initialize_app(cred,{
     'databaseURL': 'https://ionicapp-2bb5c-default-rtdb.firebaseio.com'
 })
 
-f = open("test", "r")
-c = f.readline()
+f = open("test", "rb")
+c = f.readline().decode("utf-8")
 List=[]
 
 def isQuestion(s):
@@ -50,7 +50,7 @@ while not c is None:
 		while True:
 			if line==5:							
 				break	
-			q = f.readline()
+			q = f.readline().decode("utf-8")
 			if isAnswer(q) :
 				line +=1
 				element[q[0]] = q
@@ -58,7 +58,7 @@ while not c is None:
 				element["title"] = element["title"] + q
 		element["rightAnswers"] = [1,3]		 
 		List.append(element)
-	c = f.readline()
+	c = f.readline().decode("utf-8")
 JSONFILE = {}
 JSONFILE["2018"] = {}
 JSONFILE["2018"]["Monastir"] = {}
