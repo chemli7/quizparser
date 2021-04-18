@@ -130,6 +130,34 @@ def home():
         return {'data':[]}
 
 
+@app.route('/update_quiz_data', methods=["POST"])
+def update_quiz_data():
+    input_json = request.get_json()
+    qcm_done = input_json["qcm_done"]
+    qcm_correct = input_json["number_correct_qcm"]
+    user = input_json["user"]
+    quiz_name = input_json["quiz_name"]
+    faculte = input_json["faculte"]
+    # quiz list
+    quiz_list = db.reference(user+"/quiz/quiz_list").get()
+    db.reference(user+"/quiz/quiz_list").set(quiz_list.append(quiz_name))
+    # avr score
+    avg_score = db.reference(user+"/quiz/avg_score").get()
+    db.reference(user+"/quiz/avg_score").set((avg_score*len(quiz_list) + (this.score/quiz_len))/(len(quiz_list)+1))
+    # number quiz done
+    all_quiz_done = db.reference(user+"/quiz/number_quiz_done").get()
+    db.reference(user+"/quiz/number_quiz_done").set(all_quiz_done+1)
+    # number correct qcm
+    all_correct_qcm = db.reference(user+"/quiz/number_correct_qcm").get()
+    db.reference(user+"/quiz/number_correct_qcm").set(all_correct_qcm+qcm_correct)
+    # number done qcm
+    all_done_qcm = db.reference(user+"/quiz/number_qcm_done").get()
+    db.reference(user+"/quiz/number_qcm_done").set(all_done_qcm+qcm_done)
+    # faculte qcm_done
+    qcm_faculte = db.reference(user+"/quiz/number_qcm_done_faculte").get()
+    db.reference(user+"/quiz/number_qcm_done_faculte"+faculte).set(qcm_faculte[faculte]+qcm_done)
+
+    return {"message":"OK", "error":None}
 
 if __name__ == '__main__':
     app.run(debug=True, port=8080)
