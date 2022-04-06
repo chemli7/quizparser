@@ -157,6 +157,11 @@ def update_quiz_data():
     db.reference(user+"/quiz/number_qcm_done_faculte"+faculte).set(qcm_faculte[faculte]+qcm_done)
 
     return {"message":"OK", "error":None}
+    
+@app.route('/getQuizlist', methods=["GET"])
+def getquizlist():
+        print(db.reference(user+"/quiz/quiz_list").get())
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=8080)
