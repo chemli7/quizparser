@@ -67,7 +67,6 @@ def get_specefic_statistics():
 
 @app.route('/user_init', methods=["POST"])
 def user_init():
-
     user = "userID"
     ref = db.reference('/'+user+'/quiz')
     ref.set({
@@ -143,7 +142,7 @@ def update_quiz_data():
     db.reference(user+"/quiz/quiz_list").set(quiz_list.append(quiz_name))
     # avr score
     avg_score = db.reference(user+"/quiz/avg_score").get()
-    db.reference(user+"/quiz/avg_score").set((avg_score*len(quiz_list) + (this.score/quiz_len))/(len(quiz_list)+1))
+    db.reference(user+"/quiz/avg_score").set((avg_score*len(quiz_list) + (qcm_correct/qcm_done))/(len(quiz_list)+1))
     # number quiz done
     all_quiz_done = db.reference(user+"/quiz/number_quiz_done").get()
     db.reference(user+"/quiz/number_quiz_done").set(all_quiz_done+1)
